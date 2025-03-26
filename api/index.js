@@ -52,8 +52,13 @@ app.get('/api/projects', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch projects' });
   }
 });
-app.get("/", (req, res) => {
-    res.send("Vercel!");
+app.get("/", async (req, res) => {
+  try {
+    const projects = await Project.find().sort({ createdAt: -1 });
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch projects' });
+  }
 });
 
 app.get('/api/projects/count', async (req, res) => {
